@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         scroll.addView(root);
 
         TextView title = new TextView(this);
-        title.setText("A.X.E Voice Lab v0.2.2");
+        title.setText("A.X.E Voice Lab v0.2.3");
         title.setTextSize(26);
         title.setTextColor(Color.BLACK);
         root.addView(title);
@@ -161,6 +161,14 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         root.addView(bottomButtons);
         speakBottom.setOnClickListener(v -> speak());
         stopBottom.setOnClickListener(v -> stop());
+
+        scroll.setClipToPadding(false);
+        scroll.setOnApplyWindowInsetsListener((v, insets) -> {
+            int bottomInset = insets.getSystemWindowInsetBottom();
+            root.setPadding(dp(20), dp(20), dp(20), bottomInset + dp(24));
+            return insets;
+        });
+        scroll.requestApplyInsets();
 
         return scroll;
     }
