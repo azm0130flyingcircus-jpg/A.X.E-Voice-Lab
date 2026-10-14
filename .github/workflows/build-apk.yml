@@ -5,6 +5,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,8 +22,20 @@ jobs:
           gradle-version: '8.9'
       - name: Build APK
         run: gradle :app:assembleDebug
-      - name: Upload APK
+      - name: Rename APK
+        run: cp app/build/outputs/apk/debug/app-debug.apk A.X.E-Voice-Lab-v0.2.3.apk
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: A.X.E-Voice-Lab-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: A.X.E-Voice-Lab-v0.2.3.apk
+      - name: Publish direct-download release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag -y || true
+          gh release create latest A.X.E-Voice-Lab-v0.2.3.apk \
+            --target "${GITHUB_SHA}" \
+            --title "A.X.E Voice Lab v0.2.3" \
+            --notes "Android navigation overlap fix. Existing voice behavior retained." \
+            --latest
