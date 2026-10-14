@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         sub.setPadding(0,0,0,dp(10));
         root.addView(sub);
 
-        root.addView(label("AXSの返答テキスト"));
+        root.addView(label("音声テスト用 原稿"));
         textInput = new EditText(this);
         textInput.setMinLines(6);
         textInput.setGravity(Gravity.TOP);
